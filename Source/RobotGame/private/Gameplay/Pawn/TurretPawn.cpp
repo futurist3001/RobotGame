@@ -2,6 +2,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -24,6 +25,7 @@ ATurretPawn::ATurretPawn(const FObjectInitializer& ObjectInitializer)
 	ProjectileSpawnLocationSecond = CreateDefaultSubobject<USceneComponent>(TEXT("Second projectile spawn location"));
 	ProjectileSpawnLocationThird = CreateDefaultSubobject<USceneComponent>(TEXT("Third projectile spawn location"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
+	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Health bar component"));
 
 	SetRootComponent(CollisionCapsule);
 	ShootingZone->SetupAttachment(RootComponent);
@@ -33,6 +35,7 @@ ATurretPawn::ATurretPawn(const FObjectInitializer& ObjectInitializer)
 	ProjectileSpawnLocationFirst->SetupAttachment(TurretMesh);
 	ProjectileSpawnLocationSecond->SetupAttachment(TurretMesh);
 	ProjectileSpawnLocationThird->SetupAttachment(TurretMesh);
+	HealthBarWidget->SetupAttachment(RootComponent);
 
 	RotationSpeed = 2.f;
 	ShootingTime = 3.f;

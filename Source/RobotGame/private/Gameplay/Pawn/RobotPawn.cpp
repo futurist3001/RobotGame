@@ -2,11 +2,13 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
 
 #include "RobotGame/public/Other/Projectile.h"
 #include "RobotGame/public/Other/HealthComponent.h"
@@ -19,13 +21,19 @@ ARobotPawn::ARobotPawn(const FObjectInitializer& ObjectInitializer)
 	SphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere collision component"));
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Robot mesh"));
 	ProjectileSpawnLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile spawn location"));
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("First person camera"));
+	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("First person camera"));
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring arm component"));
+	ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Third person camera"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
+	MoveForwardBackwardPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Move forward backward point"));
 
 	SetRootComponent(SphereCollision);
 	StaticMesh->SetupAttachment(RootComponent);
 	ProjectileSpawnLocation->SetupAttachment(RootComponent);
-	Camera->SetupAttachment(RootComponent);
+	FirstPersonCamera->SetupAttachment(RootComponent);
+	SpringArmComponent->SetupAttachment(RootComponent);
+	ThirdPersonCamera->SetupAttachment(SpringArmComponent);
+	MoveForwardBackwardPoint->SetupAttachment(StaticMesh);
 
 	Speed = 10.f;
 
@@ -94,6 +102,12 @@ void ARobotPawn::MoveBackwardForward(const FInputActionValue& Value)
 	{
 		//UKismetSystemLibrary::PrintString(GetWorld(), "Move forward/backward triggered", true, false, FColor::Green, 1.f);
 		AddActorLocalOffset(ForwBackwVec * Speed, true, nullptr);
+
+		if (Speed > 10.f) // more that default value (after some bonuses)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+				GetWorld(), MoveForwardBackwardEffect, MoveForwardBackwardPoint->GetComponentLocation());
+		}
 	}
 }
 
@@ -201,7 +215,7 @@ void ARobotPawn::CheckHealth_Implementation(AActor* HealthKeeper, UHealthCompone
 				DeathTimer, [HealthKeeper]()
 				{
 					HealthKeeper->Destroy();
-				}, 0.1f, false); // delay for hud widget updates in time
+				}, 0.1f, false); // delay for updating hud widget in time
 		}
 	}
 }

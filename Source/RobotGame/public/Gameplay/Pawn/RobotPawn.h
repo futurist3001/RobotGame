@@ -13,8 +13,10 @@ class AProjectile;
 class UCameraComponent;
 class UHealthComponent;
 class USphereComponent;
+class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
+class UNiagaraSystem;
 
 UCLASS()
 class ROBOTGAME_API ARobotPawn : public APawn, public IShootingInterface, public IHealthInterface
@@ -31,8 +33,14 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "ProjectileSpawnLocation")
 	TObjectPtr<USceneComponent> ProjectileSpawnLocation;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<UCameraComponent> FirstPersonCamera;
+
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	TObjectPtr<UCameraComponent> Camera;
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float Speed;
@@ -48,6 +56,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
 	TObjectPtr<UHealthComponent> HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "MoveForwardBackwardPoint")
+	TObjectPtr<USceneComponent> MoveForwardBackwardPoint;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
@@ -73,6 +84,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "VFX")
 	TObjectPtr<UParticleSystem> DeathEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "VFX")
+	TObjectPtr<UNiagaraSystem> MoveForwardBackwardEffect;
 
 private:
 	float CurrentTimeFire;

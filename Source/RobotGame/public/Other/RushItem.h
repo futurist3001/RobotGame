@@ -19,7 +19,6 @@ public:
 	float TimeResetSpeed;
 
 private:
-	uint8 bIsUnderRush : 1;
 
 public:
 	ARushItem(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());

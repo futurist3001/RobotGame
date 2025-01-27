@@ -7,29 +7,24 @@ ARushItem::ARushItem(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	BonusSpeed = 10.f;
-	TimeResetSpeed = 10.f;
-
-	bIsUnderRush = false;
+	BonusSpeed = 30.f;
+	TimeResetSpeed = 15.f;
 }
 
 void ARushItem::SpecialBonus(AActor* Actor)
 {
 	if (Actor->IsValidLowLevel(); ARobotPawn* RobotPawn = Cast<ARobotPawn>(Actor))
 	{
-		if (!bIsUnderRush)
+		if (RobotPawn->Speed != BonusSpeed)
 		{
-			bIsUnderRush = true;
-
 			float DefaultSpeed = RobotPawn->Speed;
-			RobotPawn->Speed += BonusSpeed;
+			RobotPawn->Speed = BonusSpeed;
 
 			FTimerHandle ResetSpeedTimer;
 			GetWorld()->GetTimerManager().SetTimer(
 				ResetSpeedTimer, [this, RobotPawn, DefaultSpeed]()
 				{
 					RobotPawn->Speed = DefaultSpeed;
-					bIsUnderRush = false;
 				}, TimeResetSpeed, false);
 		}
 	}

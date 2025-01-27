@@ -12,6 +12,7 @@ class AProjectile;
 class UCapsuleComponent;
 class UHealthComponent;
 class USphereComponent;
+class UWidgetComponent;
 
 UCLASS()
 class ROBOTGAME_API ATurretPawn : public APawn, public IShootingInterface, public IHealthInterface
@@ -43,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "ProjectileSpawnLocation")
 	TObjectPtr<USceneComponent> ProjectileSpawnLocationThird;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health bar widget")
+	TObjectPtr<UWidgetComponent> HealthBarWidget;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
 	float RotationSpeed;
 
@@ -61,8 +65,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	TSubclassOf<AProjectile> ProjectileClass;
-
-	//uint8 bIsLookToRobot : 1;
 
 private:
 	float DT; // value of Delta Time from Tick()
