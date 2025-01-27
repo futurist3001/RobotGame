@@ -41,7 +41,7 @@ void ARobotPlayerController::UpdateHUDWidget()
 				RobotPawn->HealthComponent->Health, RobotPawn->HealthComponent->DefaultHealth);
 
 			RobotHUDUserWidget->SetEnergy(
-				RobotPawn->GetCuurentEnergy(), RobotPawn->DefaultEnergy);
+				RobotPawn->GetCurrentEnergy(), RobotPawn->DefaultEnergy);
 		}
 	}
 	

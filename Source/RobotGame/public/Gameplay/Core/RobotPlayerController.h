@@ -20,11 +20,11 @@ public:
 	TObjectPtr<URobotHUDUserWidget> RobotHUDUserWidget;
 
 public:
+	void UpdateHUDWidget();
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	void CreateRobotHUDUserWidget();
-	void UpdateHUDWidget();
 };

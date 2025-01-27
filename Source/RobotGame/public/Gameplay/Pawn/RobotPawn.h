@@ -83,7 +83,8 @@ private:
 public:
 	ARobotPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	FORCEINLINE const float GetCuurentEnergy() const { return CurrentEnergy; }
+	FORCEINLINE const float GetCurrentEnergy() const { return CurrentEnergy; }
+	void SetCurrentEnergy(float NewEnergy) { CurrentEnergy = NewEnergy; }
 
 protected:
 	virtual void BeginPlay() override;	
